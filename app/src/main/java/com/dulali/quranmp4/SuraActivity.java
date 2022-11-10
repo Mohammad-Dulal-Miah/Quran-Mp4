@@ -1,13 +1,19 @@
 package com.dulali.quranmp4;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 public class SuraActivity extends AppCompatActivity {
 
@@ -28,6 +34,7 @@ public class SuraActivity extends AppCompatActivity {
     GridView gridView;
     public static int j;
     MediaPlayer mediaPlayer = new MediaPlayer();
+    AlertDialog.Builder exitDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +54,66 @@ public class SuraActivity extends AppCompatActivity {
                 mediaPlayer = MediaPlayer.create(getApplicationContext() , R.raw.button);
                 mediaPlayer.start();
                 j = i;
-                startActivity(new Intent(SuraActivity.this , PlaySuraActivity2.class));
+
+                boolean con = isInternetConnection();
+                if(con){
+                    startActivity(new Intent(SuraActivity.this , PlaySuraActivity2.class));
+                    Toast.makeText(SuraActivity.this, "If you have no data , you will not see video...", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    startActivity(new Intent(SuraActivity.this , NoInternetActivity.class));
+                    Toast.makeText(SuraActivity.this, "Go back...and Active your internet please...", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
+
+    public  boolean isInternetConnection()
+    {
+        boolean connected = false;
+        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            //we are connected to a network
+            connected = true;
+        }
+        else
+            connected = false;
+        return connected;
+    }
+
+    public void loadExit(){
+
+        exitDialog = new AlertDialog.Builder(SuraActivity.this);
+        exitDialog.setTitle("Quran Mp4");
+        exitDialog.setMessage("Ary you want to exit ?");
+        exitDialog.setCancelable(false);
+
+        exitDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                finishAffinity();
+                System.exit(0);
+            }
+        });
+        exitDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = exitDialog.create();
+        alertDialog.show();
+    }
+
+    @Override
+    public void onBackPressed(){
+
+        loadExit();
+    }
+
+
 }

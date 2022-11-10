@@ -55,4 +55,6 @@ public class PlaySuraActivity2 extends AppCompatActivity {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(suraVideo[j]);
     }
+
+
 }
