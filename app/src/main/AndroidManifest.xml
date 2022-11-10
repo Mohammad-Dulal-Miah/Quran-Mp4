@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
 
     <application
         android:allowBackup="true"
@@ -49,6 +50,9 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
+        <meta-data android:name="applovin.sdk.key"
+            android:value="XVTT8ueVZJi67IcZGfiHQy2sHE4y_vV01PtcsV1vAR8eATBB2_4NnDIQmIqg76PsWRS0D_LU1M_W3IMxRTqudm"/>
     </application>
 
 </manifest>

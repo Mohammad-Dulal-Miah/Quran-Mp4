@@ -9,9 +9,17 @@ import android.os.Bundle;
 import android.webkit.WebView;
 import android.widget.TextView;
 
-public class PlaySuraActivity2 extends AppCompatActivity {
+import com.applovin.mediation.MaxAd;
+import com.applovin.mediation.MaxAdListener;
+import com.applovin.mediation.MaxError;
+import com.applovin.mediation.ads.MaxAdView;
+import com.applovin.sdk.AppLovinSdk;
+import com.applovin.sdk.AppLovinSdkConfiguration;
+
+public class PlaySuraActivity2 extends AppCompatActivity implements MaxAdListener {
     TextView text;
     WebView webView;
+    private MaxAdView adView;
     String suraVideo[] = {"https://www.youtube.com/embed/-PqP0BCiTlE" , "https://www.youtube.com/embed/X2YnP50cwNU","https://www.youtube.com/embed/GKYePN8vkYs","https://www.youtube.com/embed/TjNgppGSSpk",
             "https://www.youtube.com/embed/M_L14cyMWYU","https://www.youtube.com/embed/AS7GaWq6OAk","https://www.youtube.com/embed/zOZsaMr-6RA","https://www.youtube.com/embed/RDADq-Ni7b0",
             "https://www.youtube.com/embed/WEkenhA5mPU","https://www.youtube.com/embed/UTIDryXbyoI","https://www.youtube.com/embed/SqXHF9Y_eOQ","https://www.youtube.com/embed/EFSJXdVAtBQ",
@@ -54,7 +62,49 @@ public class PlaySuraActivity2 extends AppCompatActivity {
         text.setText(sura_names[j]);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(suraVideo[j]);
+
+
+        AppLovinSdk.getInstance( PlaySuraActivity2.this ).setMediationProvider( "max" );
+        AppLovinSdk.initializeSdk( PlaySuraActivity2.this, new AppLovinSdk.SdkInitializationListener() {
+            @Override
+            public void onSdkInitialized(final AppLovinSdkConfiguration configuration)
+            {
+                // AppLovin SDK is initialized, start loading ads
+            }
+        } );
+
+        adView= findViewById(R.id.adView);
+        adView.loadAd();
     }
 
 
+    @Override
+    public void onAdLoaded(MaxAd ad) {
+
+    }
+
+    @Override
+    public void onAdDisplayed(MaxAd ad) {
+
+    }
+
+    @Override
+    public void onAdHidden(MaxAd ad) {
+
+    }
+
+    @Override
+    public void onAdClicked(MaxAd ad) {
+
+    }
+
+    @Override
+    public void onAdLoadFailed(String adUnitId, MaxError error) {
+
+    }
+
+    @Override
+    public void onAdDisplayFailed(MaxAd ad, MaxError error) {
+
+    }
 }
